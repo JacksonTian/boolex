@@ -3,21 +3,24 @@
 A DSL for
 
 ## BNF
+
+```
 // E = (E)
 // E = E && E
 // E = E || E
 // E = some => E
-// E = a >= val
-// E = a <= val
-// E = a == val
-// E = a != val
-// E = a > val
-// E = a < val
-// E = a include val
-// a = '@'+xxx
-// val = number
-// val = 'string'
-// val = "string"
+// E = e >= e
+// E = e <= e
+// E = e == e
+// E = e != e
+// E = e > e
+// E = e < e
+// E = e include e
+// e = '@'+xxx
+// e = number
+// e = 'string'
+// e = "string"
+```
 
 ## License
 The MIT license
