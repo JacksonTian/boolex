@@ -1,0 +1,19 @@
+{
+  "name": "boolex",
+  "version": "1.0.0",
+  "description": "Bool Expression",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jackson Tian",
+  "license": "MIT",
+  "devDependencies": {
+    "expect.js": "~0.3.1",
+    "istanbul": "~0.4.0",
+    "mocha": "~2.3.3"
+  }
+}
