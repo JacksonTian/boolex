@@ -60,9 +60,9 @@ describe('parser', function () {
     expect(parse("@num > 10 || @num < 20")).to.be(result);
   });
 
-  it('(some => @node == \"v4.1.0\") should ok', function () {
-    var result = `(function (context) {\n  // some => @node == "v4.1.0"\n  return Array.isArray(context) && context.some(function (context) {\n    return context.node == "v4.1.0";\n  });\n})\n`;
-    expect(parse("some => @node == \"v4.1.0\"")).to.be(result);
+  it('(=> @node == \"v4.1.0\") should ok', function () {
+    var result = `(function (context) {\n  // => @node == "v4.1.0"\n  return Array.isArray(context) && context.some(function (context) {\n    return context.node == "v4.1.0";\n  });\n})\n`;
+    expect(parse("=> @node == \"v4.1.0\"")).to.be(result);
   });
 
   it('(@count <= 10 && (@num == 10 || @num == 20)) should ok', function () {

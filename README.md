@@ -8,7 +8,7 @@ A DSL for Bool judge
 // E = (E)
 // E = E && E
 // E = E || E
-// E = some => E
+// E = => E
 // E = e >= e
 // E = e <= e
 // E = e == e
