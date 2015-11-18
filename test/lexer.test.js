@@ -58,9 +58,10 @@ describe('lexer', function () {
       '@num', '>', '10', '||', '@num', '<', '20', 'End_Of_File']);
   });
 
-  it('(=> @node == \"v4.1.0\") should ok', function () {
-    expect(lex("=> @node == \"v4.1.0\"")).to.eql([
-      '=>', '@node', '==', '\"v4.1.0\"', 'End_Of_File']);
+  it('(=> @node == \"v4.1.0\") should throw exception', function () {
+    expect(function () {
+      lex("=> @node == \"v4.1.0\"");
+    }).to.throwException(/不认识的字符: >/);
   });
 
   it('(@count <= 10.1) should ok', function () {
