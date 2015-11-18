@@ -63,9 +63,13 @@ describe('lexer', function () {
       '=>', '@node', '==', '\"v4.1.0\"', 'End_Of_File']);
   });
 
-  it('(@count <= 10 && (@num == 10 || @num == 20)) should ok', function () {
-    expect(lex("@count <= 10 && (@num == 10 || @num == 20)")).to.eql([
-      '@count', '<=', '10', '&&', '(', '@num', '==', '10', '||',
-      '@num', '==', '20', ')', 'End_Of_File']);
+  it('(@count <= 10.1) should ok', function () {
+    expect(lex("@count <= 10.1")).to.eql([
+      '@count', '<=', '10.1', 'End_Of_File']);
+  });
+
+  it('(@count include "\"hehe") should ok', function () {
+    expect(lex('@count include "\\\"hehe"')).to.eql([
+      '@count', 'include', '"\\\"hehe"', 'End_Of_File']);
   });
 });
