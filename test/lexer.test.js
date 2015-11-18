@@ -73,4 +73,34 @@ describe('lexer', function () {
     expect(lex('@count include "\\\"hehe"')).to.eql([
       '@count', 'include', '"\\\"hehe"', 'End_Of_File']);
   });
+
+  it('(@count + 10 > 5) should ok', function () {
+    expect(lex('@count + 10 > 5')).to.eql([
+      '@count', '+', '10', '>', '5', 'End_Of_File']);
+  });
+
+  it('(@count - 10 > 5) should ok', function () {
+    expect(lex('@count - 10 > 5')).to.eql([
+      '@count', '-', '10', '>', '5', 'End_Of_File']);
+  });
+
+  it('(@count * 10 > 5) should ok', function () {
+    expect(lex('@count * 10 > 5')).to.eql([
+      '@count', '*', '10', '>', '5', 'End_Of_File']);
+  });
+
+  it('(@count / 10 > 5) should ok', function () {
+    expect(lex('@count / 10 > 5')).to.eql([
+      '@count', '/', '10', '>', '5', 'End_Of_File']);
+  });
+
+  it('(@count % 10 > 5) should ok', function () {
+    expect(lex('@count % 10 > 5')).to.eql([
+      '@count', '%', '10', '>', '5', 'End_Of_File']);
+  });
+
+  it('(@used / @limit > 0.8) should ok', function () {
+    expect(lex('@used / @limit > 0.8')).to.eql([
+      '@used', '/', '@limit', '>', '0.8', 'End_Of_File']);
+  });
 });
