@@ -2,12 +2,16 @@
 
 A DSL for Bool judge
 
+- [![Build Status](https://secure.travis-ci.org/JacksonTian/boolex.png)](http://travis-ci.org/JacksonTian/boolex)
+- [![NPM version](https://badge.fury.io/js/boolex.png)](http://badge.fury.io/js/boolex)
+
+[![NPM](https://nodei.co/npm/boolex.png?downloads=true&stars=true)](https://nodei.co/npm/boolex)
+
 ## BNF
 
 ```
-// E = (E)
-// E = E && E
 // E = E || E
+// E = E && E
 // E = => E
 // E = e >= e
 // E = e <= e
@@ -20,6 +24,7 @@ A DSL for Bool judge
 // e = number
 // e = 'string'
 // e = "string"
+// e = (E)
 ```
 
 ## Usage

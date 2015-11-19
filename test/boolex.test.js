@@ -94,17 +94,20 @@ describe('boolex', function () {
   });
 
   it('(@count * 1 <= 10) should ok', function () {
-    var result = `(function (context) {\n  // @count * 1 <= 10\n  return context.count * 1 <= 10;\n})\n`;
-    expect(parse("@count * 1 <= 10")).to.be(result);
+    var fn = boolex.compile("@count * 1 <= 10");
+    expect(fn({count: 5})).to.be(true);
+    expect(fn({count: 15})).to.be(false);
   });
 
   it('(@count / 1 <= 10) should ok', function () {
-    var result = `(function (context) {\n  // @count / 1 <= 10\n  return context.count / 1 <= 10;\n})\n`;
-    expect(parse("@count / 1 <= 10")).to.be(result);
+    var fn = boolex.compile("@count / 1 <= 10");
+    expect(fn({count: 5})).to.be(true);
+    expect(fn({count: 15})).to.be(false);
   });
 
   it('(@count % 1 <= 10) should ok', function () {
-    var result = `(function (context) {\n  // @count % 1 <= 10\n  return context.count % 1 <= 10;\n})\n`;
-    expect(parse("@count % 1 <= 10")).to.be(result);
+    var fn = boolex.compile("@count % 2 == 1");
+    expect(fn({count: 5})).to.be(true);
+    expect(fn({count: 6})).to.be(false);
   });
 });
