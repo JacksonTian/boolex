@@ -4,6 +4,8 @@ A DSL for Bool judge
 
 - [![Build Status](https://secure.travis-ci.org/JacksonTian/boolex.png)](http://travis-ci.org/JacksonTian/boolex)
 - [![NPM version](https://badge.fury.io/js/boolex.png)](http://badge.fury.io/js/boolex)
+- [![Dependencies Status](https://david-dm.org/JacksonTian/boolex.png)](https://david-dm.org/JacksonTian/boolex)
+- [![Coverage Status](https://coveralls.io/repos/JacksonTian/boolex/badge.png)](https://coveralls.io/r/JacksonTian/boolex)
 
 [![NPM](https://nodei.co/npm/boolex.png?downloads=true&stars=true)](https://nodei.co/npm/boolex)
 
