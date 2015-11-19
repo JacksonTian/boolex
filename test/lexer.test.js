@@ -12,8 +12,8 @@ var lex = function (source) {
   var tokens = [];
   do {
     lexer.getToken();
-    tokens.push(lexer.get_tkstr(lexer.token));
-  } while (lexer.token !== e_TokenCode.TK_EOF);
+    tokens.push(lexer.token.spelling);
+  } while (lexer.token.tkcode !== e_TokenCode.TK_EOF);
 
   return tokens;
 };
@@ -102,5 +102,10 @@ describe('lexer', function () {
   it('(@used / @limit > 0.8) should ok', function () {
     expect(lex('@used / @limit > 0.8')).to.eql([
       '@used', '/', '@limit', '>', '0.8', 'End_Of_File']);
+  });
+
+  it('(@used && (@limit || 0.8)) should ok', function () {
+    expect(lex('@used && (@limit || 0.8)')).to.eql([
+      '@used', '&&', '(', '@limit', '||', '0.8', ')', 'End_Of_File']);
   });
 });
