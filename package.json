@@ -16,5 +16,17 @@
     "istanbul": "~0.4.0",
     "mocha": "~2.3.3",
     "coveralls": "^2.11.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacksonTian/boolex.git"
+  },
+  "keywords": [
+    "Bool",
+    "Expression"
+  ],
+  "bugs": {
+    "url": "https://github.com/JacksonTian/boolex/issues"
+  },
+  "homepage": "https://github.com/JacksonTian/boolex#readme"
 }
