@@ -3,17 +3,21 @@
 var expect = require('expect.js');
 
 var boolex = require('../');
-var vm = require('vm');
 
 describe('boolex', function () {
   it('parse should ok', function () {
     var expr = "@count >= 10";
-    var code = boolex.parse(expr);
-    // get function with vm
-    var check = vm.runInThisContext(code);
+    var ast = boolex.parse(expr);
 
-    expect(check({count: 10})).to.be(true);
-    expect(check({count: 5})).to.be(false);
+    expect(ast).to.eql({
+      token: { tkcode: 11, spelling: '>=' },
+      expr1: {
+        token: { tkcode: 21, spelling: '@count' }
+      },
+      expr2: {
+        token: { tkcode: 17, spelling: '10' }
+      }
+    });
   });
 
   it('compile should ok', function () {

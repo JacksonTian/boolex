@@ -11,11 +11,12 @@ const Parser = require('./lib/parser');
 exports.parse = function (source) {
   var parser = new Parser(source);
   parser.parse();
-  return parser.code;
+  return parser.ast;
 };
 
 exports.compile = function (source) {
-  var code = exports.parse(source);
+  var parser = new Parser(source);
+  var code = parser.gen();
   // get function with vm
   var name = crypto.createHash('sha1').update(source).digest('hex');
   var filename = path.join(os.tmpdir(), name + ".js");

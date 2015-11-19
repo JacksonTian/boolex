@@ -8,10 +8,10 @@ var parse = function (source) {
   // console.log('------ source -------');
   // console.log(source);
   var parser = new Parser(source);
-  parser.parse();
+  var code = parser.gen();
   // console.log('------ compiled -------');
-  // console.log(parser.code);
-  return parser.code;
+  // console.log(code);
+  return code;
 };
 
 describe('parser', function () {
@@ -61,12 +61,38 @@ describe('parser', function () {
   });
 
   it('(=> @node == \"v4.1.0\") should ok', function () {
-    var result = `(function (context) {\n  // => @node == "v4.1.0"\n  return Array.isArray(context) && context.some(function (context) {\n    return context.node == "v4.1.0";\n  });\n})\n`;
-    expect(parse("=> @node == \"v4.1.0\"")).to.be(result);
+    expect(function () {
+      parse("=> @node == \"v4.1.0\"");
+    }).to.throwException(/不认识的字符: >/);
   });
 
   it('(@count <= 10 && (@num == 10 || @num == 20)) should ok', function () {
     var result = `(function (context) {\n  // @count <= 10 && (@num == 10 || @num == 20)\n  return context.count <= 10 && (context.num == 10 || context.num == 20);\n})\n`;
     expect(parse("@count <= 10 && (@num == 10 || @num == 20)")).to.be(result);
+  });
+
+  it('(@count + 1 <= 10) should ok', function () {
+    var result = `(function (context) {\n  // @count + 1 <= 10\n  return context.count + 1 <= 10;\n})\n`;
+    expect(parse("@count + 1 <= 10")).to.be(result);
+  });
+
+  it('(@count - 1 <= 10) should ok', function () {
+    var result = `(function (context) {\n  // @count - 1 <= 10\n  return context.count - 1 <= 10;\n})\n`;
+    expect(parse("@count - 1 <= 10")).to.be(result);
+  });
+
+  it('(@count * 1 <= 10) should ok', function () {
+    var result = `(function (context) {\n  // @count * 1 <= 10\n  return context.count * 1 <= 10;\n})\n`;
+    expect(parse("@count * 1 <= 10")).to.be(result);
+  });
+
+  it('(@count / 1 <= 10) should ok', function () {
+    var result = `(function (context) {\n  // @count / 1 <= 10\n  return context.count / 1 <= 10;\n})\n`;
+    expect(parse("@count / 1 <= 10")).to.be(result);
+  });
+
+  it('(@count % 1 <= 10) should ok', function () {
+    var result = `(function (context) {\n  // @count % 1 <= 10\n  return context.count % 1 <= 10;\n})\n`;
+    expect(parse("@count % 1 <= 10")).to.be(result);
   });
 });
