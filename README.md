@@ -40,18 +40,18 @@ Script with boolex:
 
 ```
 var boolex = require('boolex');
-var vm = require('vm');
 
 var expr = "@count >= 10";
 
-var code = boolex.parse(expr);
-// get function with vm
-var check = vm.runInThisContext(code);
+var check = boolex.compile(expr);
 
 var result = check({count: 10});
 // => result is true
 var result = check({count: 5});
 // => result is false
 ```
+
+Please see test cases for more usage details.
+
 ## License
 The MIT license
