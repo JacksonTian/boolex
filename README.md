@@ -11,22 +11,22 @@ A DSL for Bool judge
 
 ## BNF
 
-```
-// E = E || E
-// E = E && E
-// E = => E
-// E = e >= e
-// E = e <= e
-// E = e == e
-// E = e != e
-// E = e > e
-// E = e < e
-// E = e include e
-// e = '@'+xxx
-// e = number
-// e = 'string'
-// e = "string"
-// e = (E)
+```ebnf
+E ::= E || E
+E ::= E && E
+E ::= => E
+E ::= e >= e
+E ::= e <= e
+E ::= e == e
+E ::= e != e
+E ::= e > e
+E ::= e < e
+E ::= e include e
+e ::= '@'+xxx
+e ::= number
+e ::= 'string'
+e ::= "string"
+e ::= (E)
 ```
 
 ## Usage
@@ -38,12 +38,12 @@ $ npm install boolex --save
 
 Script with boolex:
 
-```
-var boolex = require('boolex');
+```js
+const boolex = require('boolex');
 
-var expr = "@count >= 10";
+const expr = "@count >= 10";
 
-var check = boolex.compile(expr);
+const check = boolex.compile(expr);
 
 var result = check({count: 10});
 // => result is true

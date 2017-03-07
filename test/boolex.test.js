@@ -1,12 +1,12 @@
 'use strict';
 
-var expect = require('expect.js');
+const expect = require('expect.js');
 
-var boolex = require('../');
+const boolex = require('../');
 
 describe('boolex', function () {
   it('parse ast should ok', function () {
-    var expr = "@count >= 10";
+    var expr = '@count >= 10';
     var ast = boolex.parse(expr);
 
     expect(ast).to.eql({
@@ -27,31 +27,31 @@ describe('boolex', function () {
   });
 
   it('(@num != 0) should ok', function () {
-    var fn = boolex.compile("@num != 0");
+    var fn = boolex.compile('@num != 0');
     expect(fn({num: 1})).to.be(true);
     expect(fn({num: 0})).to.be(false);
   });
 
   it('(@num > 10) should ok', function () {
-    var fn = boolex.compile("@num > 10");
+    var fn = boolex.compile('@num > 10');
     expect(fn({num: 11})).to.be(true);
     expect(fn({num: 5})).to.be(false);
   });
 
   it('(@num >= 10) should ok', function () {
-    var fn = boolex.compile("@num >= 10");
+    var fn = boolex.compile('@num >= 10');
     expect(fn({num: 10})).to.be(true);
     expect(fn({num: 5})).to.be(false);
   });
 
   it('(@count < 10) should ok', function () {
-    var fn = boolex.compile("@count < 10");
+    var fn = boolex.compile('@count < 10');
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 10})).to.be(false);
   });
 
   it('(@count <= 10) should ok', function () {
-    var fn = boolex.compile("@count <= 10");
+    var fn = boolex.compile('@count <= 10');
     expect(fn({count: 10})).to.be(true);
     expect(fn({count: 11})).to.be(false);
   });
@@ -69,44 +69,44 @@ describe('boolex', function () {
   });
 
   it('(@num > 10 || @num < 5) should ok', function () {
-    var fn = boolex.compile("@num > 10 || @num < 5");
+    var fn = boolex.compile('@num > 10 || @num < 5');
     expect(fn({num: 3})).to.be(true);
     expect(fn({num: 11})).to.be(true);
     expect(fn({num: 6})).to.be(false);
   });
 
   it('(@count <= 10 && (@num == 10 || @num == 20)) should ok', function () {
-    var fn = boolex.compile("@count <= 10 && (@num == 15 || @num == 20)");
+    var fn = boolex.compile('@count <= 10 && (@num == 15 || @num == 20)');
     expect(fn({num: 15, count: 10})).to.be(true);
     expect(fn({num: 15, count: 15})).to.be(false);
   });
 
   it('(@count + 1 <= 10) should ok', function () {
-    var fn = boolex.compile("@count + 1 <= 10");
+    var fn = boolex.compile('@count + 1 <= 10');
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 10})).to.be(false);
   });
 
   it('(@count - 1 <= 10) should ok', function () {
-    var fn = boolex.compile("@count - 1 <= 10");
+    var fn = boolex.compile('@count - 1 <= 10');
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 15})).to.be(false);
   });
 
   it('(@count * 1 <= 10) should ok', function () {
-    var fn = boolex.compile("@count * 1 <= 10");
+    var fn = boolex.compile('@count * 1 <= 10');
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 15})).to.be(false);
   });
 
   it('(@count / 1 <= 10) should ok', function () {
-    var fn = boolex.compile("@count / 1 <= 10");
+    var fn = boolex.compile('@count / 1 <= 10');
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 15})).to.be(false);
   });
 
   it('(@count % 1 <= 10) should ok', function () {
-    var fn = boolex.compile("@count % 2 == 1");
+    var fn = boolex.compile('@count % 2 == 1');
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 6})).to.be(false);
   });

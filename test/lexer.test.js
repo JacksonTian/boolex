@@ -1,11 +1,11 @@
 'use strict';
 
-var expect = require('expect.js');
+const expect = require('expect.js');
 
-var Lexer = require('../lib/lexer');
-var e_TokenCode = Lexer.e_TokenCode;
+const Lexer = require('../lib/lexer');
+const TokenCode = require('../lib/token_code');
 
-var lex = function (source) {
+const lex = function (source) {
   var lexer = new Lexer(source);
   lexer.getch();
 
@@ -13,7 +13,7 @@ var lex = function (source) {
   do {
     lexer.getToken();
     tokens.push(lexer.token.spelling);
-  } while (lexer.token.tkcode !== e_TokenCode.TK_EOF);
+  } while (lexer.token.tkcode !== TokenCode.TK_EOF);
 
   return tokens;
 };
@@ -21,26 +21,37 @@ var lex = function (source) {
 describe('lexer', function () {
   it('(@node == "v4.1.0") should ok', function () {
     expect(lex("@node == 'v4.1.0'")).to.eql(['@node', '==', '\'v4.1.0\'', 'End_Of_File']);
+    expect(lex("'v4.1.0' == @node")).to.eql(['\'v4.1.0\'', '==', '@node', 'End_Of_File']);
   });
 
   it('(@num != 0) should ok', function () {
-    expect(lex("@num != 0")).to.eql(['@num', '!=', '0', 'End_Of_File']);
+    expect(lex('@num != 0')).to.eql(['@num', '!=', '0', 'End_Of_File']);
+  });
+
+  it('(@a != 0) should ok', function () {
+    expect(lex('@a != 0')).to.eql(['@a', '!=', '0', 'End_Of_File']);
+  });
+
+  it('(@num != 0) should not ok', function () {
+    expect(function () {
+      lex('@num ! 0');
+    }).to.throwException(/期待'='，但实际是' '/);
   });
 
   it('(@num > 10) should ok', function () {
-    expect(lex("@num > 10")).to.eql(['@num', '>', '10', 'End_Of_File']);
+    expect(lex('@num > 10')).to.eql(['@num', '>', '10', 'End_Of_File']);
   });
 
   it('(@num >= 10) should ok', function () {
-    expect(lex("@num >= 10")).to.eql(['@num', '>=', '10', 'End_Of_File']);
+    expect(lex('@num >= 10')).to.eql(['@num', '>=', '10', 'End_Of_File']);
   });
 
   it('(@count < 10) should ok', function () {
-    expect(lex("@count < 10")).to.eql(['@count', '<', '10', 'End_Of_File']);
+    expect(lex('@count < 10')).to.eql(['@count', '<', '10', 'End_Of_File']);
   });
 
   it('(@count <= 10) should ok', function () {
-    expect(lex("@count <= 10")).to.eql(['@count', '<=', '10', 'End_Of_File']);
+    expect(lex('@count <= 10')).to.eql(['@count', '<=', '10', 'End_Of_File']);
   });
 
   it('(@message include "TypeError") should ok', function () {
@@ -48,24 +59,42 @@ describe('lexer', function () {
       '@message', 'include', '"TypeError"', 'End_Of_File']);
   });
 
+  it('(@message include "TypeError) should not ok', function () {
+    expect(function () {
+      lex('@message include "TypeError');
+    }).to.throwException(/未期望的结束/);
+  });
+
   it('(@num > 10 && @num < 20) should ok', function () {
-    expect(lex("@num > 10 && @num < 20")).to.eql([
+    expect(lex('@num > 10 && @num < 20')).to.eql([
       '@num', '>', '10', '&&', '@num', '<', '20', 'End_Of_File']);
   });
 
+  it('(@num > 10 & @num < 20) should throw exception', function () {
+    expect(function () {
+      lex('@num > 10 & @num < 20');
+    }).to.throwException(/期待'&'，但实际是' '/);
+  });
+
   it('(@num > 10 || @num < 20) should ok', function () {
-    expect(lex("@num > 10 || @num < 20")).to.eql([
+    expect(lex('@num > 10 || @num < 20')).to.eql([
       '@num', '>', '10', '||', '@num', '<', '20', 'End_Of_File']);
+  });
+
+  it('(@num > 10 | @num < 20) should throw exception', function () {
+    expect(function () {
+      lex('@num > 10 | @num < 20');
+    }).to.throwException(/期待'|'，但实际是' '/);
   });
 
   it('(=> @node == \"v4.1.0\") should throw exception', function () {
     expect(function () {
-      lex("=> @node == \"v4.1.0\"");
-    }).to.throwException(/不认识的字符: >/);
+      lex('=> @node == "v4.1.0"');
+    }).to.throwException(/期待'='，但实际是'>'/);
   });
 
   it('(@count <= 10.1) should ok', function () {
-    expect(lex("@count <= 10.1")).to.eql([
+    expect(lex('@count <= 10.1')).to.eql([
       '@count', '<=', '10.1', 'End_Of_File']);
   });
 
@@ -107,5 +136,11 @@ describe('lexer', function () {
   it('(@used && (@limit || 0.8)) should ok', function () {
     expect(lex('@used && (@limit || 0.8)')).to.eql([
       '@used', '&&', '(', '@limit', '||', '0.8', ')', 'End_Of_File']);
+  });
+
+  it('\\ escape should ok', function () {
+    expect(lex(`"\\0\\a\\b\\t\\n\\v\\f\\r\\"\\'\\\\"`)).to.eql([
+      `"\\0\\a\\b\\t\\n\\v\\f\\r\\"\\'\\\\"`, 'End_Of_File']);
+    expect(lex(`"\\c"`)).to.eql([`"\\c"`, 'End_Of_File']);
   });
 });
