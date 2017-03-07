@@ -28,5 +28,9 @@
   "bugs": {
     "url": "https://github.com/JacksonTian/boolex/issues"
   },
-  "homepage": "https://github.com/JacksonTian/boolex#readme"
+  "homepage": "https://github.com/JacksonTian/boolex#readme",
+  "files": [
+    "index.js",
+    "lib"
+  ]
 }

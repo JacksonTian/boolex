@@ -1,11 +1,11 @@
 'use strict';
 
-var expect = require('expect.js');
+const expect = require('expect.js');
 
-var Lexer = require('../lib/lexer');
-var e_TokenCode = Lexer.e_TokenCode;
+const Lexer = require('../lib/lexer');
+const TokenCode = require('../lib/token_code');
 
-var lex = function (source) {
+const lex = function (source) {
   var lexer = new Lexer(source);
   lexer.getch();
 
@@ -13,7 +13,7 @@ var lex = function (source) {
   do {
     lexer.getToken();
     tokens.push(lexer.token.spelling);
-  } while (lexer.token.tkcode !== e_TokenCode.TK_EOF);
+  } while (lexer.token.tkcode !== TokenCode.TK_EOF);
 
   return tokens;
 };
