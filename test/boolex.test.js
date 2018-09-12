@@ -57,9 +57,22 @@ describe('boolex', function () {
   });
 
   it('(@message include "TypeError") should ok', function () {
+    var fn = boolex.compile('(@message include "TypeError")');
+    expect(fn({message: 'TypeError should ok'})).to.be(true);
+    expect(fn({message: 'foo'})).to.be(false);
+  });
+
+  it('(@message include "TypeError") should ok', function () {
     var fn = boolex.compile('@message include "TypeError"');
     expect(fn({message: 'TypeError should ok'})).to.be(true);
     expect(fn({message: 'foo'})).to.be(false);
+  });
+
+  it('((@message include "TypeError") != true) should ok', function () {
+    var fn = boolex.compile('((@message include "TypeError")) != true');
+    console.log(fn.toString());
+    expect(fn({message: 'TypeError should ok'})).to.be(false);
+    expect(fn({message: 'foo'})).to.be(true);
   });
 
   it('(@num > 10 && @num < 20) should ok', function () {

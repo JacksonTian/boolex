@@ -24,6 +24,19 @@ describe('lexer', function () {
     expect(lex("'v4.1.0' == @node")).to.eql(['\'v4.1.0\'', '==', '@node', 'End_Of_File']);
   });
 
+  it('((@node == "v4.1.0")) should ok', function () {
+    expect(lex("(@node == 'v4.1.0')")).to.eql(['(', '@node', '==', '\'v4.1.0\'', ')', 'End_Of_File']);
+  });
+
+  it('(@node == true) should ok', function () {
+    expect(lex('@node == true')).to.eql(['@node', '==', 'true', 'End_Of_File']);
+    expect(lex('@node == false')).to.eql(['@node', '==', 'false', 'End_Of_File']);
+  });
+
+  it('(!(@node == "v4.1.0")) should ok', function () {
+    expect(lex("!(@node == 'v4.1.0')")).to.eql(['!', '(', '@node', '==', '\'v4.1.0\'', ')', 'End_Of_File']);
+  });
+
   it('(@num != 0) should ok', function () {
     expect(lex('@num != 0')).to.eql(['@num', '!=', '0', 'End_Of_File']);
   });
@@ -32,10 +45,8 @@ describe('lexer', function () {
     expect(lex('@a != 0')).to.eql(['@a', '!=', '0', 'End_Of_File']);
   });
 
-  it('(@num != 0) should not ok', function () {
-    expect(function () {
-      lex('@num ! 0');
-    }).to.throwException(/期待'='，但实际是' '/);
+  it('(@num ! 0) should ok', function () {
+    expect(lex('@num ! 0')).to.eql(['@num', '!', '0', 'End_Of_File']);
   });
 
   it('(@num > 10) should ok', function () {
@@ -84,10 +95,10 @@ describe('lexer', function () {
   it('(@num > 10 | @num < 20) should throw exception', function () {
     expect(function () {
       lex('@num > 10 | @num < 20');
-    }).to.throwException(/期待'|'，但实际是' '/);
+    }).to.throwException(/期待'\|'，但实际是' '/);
   });
 
-  it('(=> @node == \"v4.1.0\") should throw exception', function () {
+  it('(=> @node == "v4.1.0") should throw exception', function () {
     expect(function () {
       lex('=> @node == "v4.1.0"');
     }).to.throwException(/期待'='，但实际是'>'/);
@@ -98,9 +109,14 @@ describe('lexer', function () {
       '@count', '<=', '10.1', 'End_Of_File']);
   });
 
-  it('(@count include "\"hehe") should ok', function () {
-    expect(lex('@count include "\\\"hehe"')).to.eql([
-      '@count', 'include', '"\\\"hehe"', 'End_Of_File']);
+  it('(@count include "\\"hehe") should ok', function () {
+    expect(lex('@count include "\\"hehe"')).to.eql([
+      '@count', 'include', '"\\"hehe"', 'End_Of_File']);
+  });
+
+  it('(@count include "\\hehe") should ok', function () {
+    expect(lex('@count include "\\"hehe"')).to.eql([
+      '@count', 'include', '"\\"hehe"', 'End_Of_File']);
   });
 
   it('(@count + 10 > 5) should ok', function () {
@@ -143,4 +159,36 @@ describe('lexer', function () {
       `"\\0\\a\\b\\t\\n\\v\\f\\r\\"\\'\\\\"`, 'End_Of_File']);
     expect(lex(`"\\c"`)).to.eql([`"\\c"`, 'End_Of_File']);
   });
+
+  it('(^) should not ok', function () {
+    expect(function () {
+      lex('^');
+    }).to.throwException(function (e) { // get the exception object
+      expect(e).to.be.a(SyntaxError);
+      expect(e.message).to.be('未期望的字符\'^\'');
+    });
+  });
+
+  it('(abc) should not ok', function () {
+    expect(function () {
+      lex('abc');
+    }).to.throwException(function (e) { // get the exception object
+      expect(e).to.be.a(SyntaxError);
+      expect(e.message).to.be('unexpected token \'abc\'');
+    });
+  });
+
+  it('(@123) should not ok', function () {
+    expect(function () {
+      lex('@123');
+    }).to.throwException(function (e) { // get the exception object
+      expect(e).to.be.a(SyntaxError);
+      expect(e.message).to.be('must be Letter or _ after @');
+    });
+  });
+
+  it('should ok with \n', function () {
+    expect(lex("@node == \n 'v4.1.0'")).to.eql(['@node', '==', '\'v4.1.0\'', 'End_Of_File']);
+  });
+
 });
