@@ -45,8 +45,13 @@ describe('parser', function () {
     expect(parse('@count <= 10')).to.be(result);
   });
 
+  it('(@num == true) should ok', function () {
+    var result = `(function (context) {\n  // @num == true\n  return context.num == true;\n})\n`;
+    expect(parse('@num == true')).to.be(result);
+  });
+
   it('(@message include "TypeError") should ok', function () {
-    var result = `(function (context) {\n  // @message include "TypeError"\n  return ("" + context.message).indexOf("TypeError") !== -1;\n})\n`;
+    var result = `(function (context) {\n  // @message include "TypeError"\n  return (("" + context.message).indexOf("TypeError") !== -1);\n})\n`;
     expect(parse('@message include "TypeError"')).to.be(result);
   });
 
@@ -58,12 +63,6 @@ describe('parser', function () {
   it('(@num > 10 || @num < 20) should ok', function () {
     var result = `(function (context) {\n  // @num > 10 || @num < 20\n  return context.num > 10 || context.num < 20;\n})\n`;
     expect(parse('@num > 10 || @num < 20')).to.be(result);
-  });
-
-  it('(=> @node == \"v4.1.0\") should ok', function () {
-    expect(function () {
-      parse('=> @node == "v4.1.0"');
-    }).to.throwException();
   });
 
   it('(@count <= 10 && (@num == 10 || @num == 20)) should ok', function () {

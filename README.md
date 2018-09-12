@@ -14,6 +14,7 @@ A DSL for Bool judge
 ```ebnf
 E ::= E || E
 E ::= E && E
+E ::= !E
 E ::= => E
 E ::= e >= e
 E ::= e <= e
