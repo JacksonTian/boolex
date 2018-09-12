@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint --fix lib/* test/* index.js",
     "test": "mocha -R spec test/*.test.js",
-    "test-cov": "nyc --reporter=html --reporter=text --report lcovonly mocha -R spec test/*.test.js",
+    "test-cov": "nyc -r=html -r=text -r=lcov mocha -R spec test/*.test.js",
     "ci": "npm run lint && npm run test-cov && codecov"
   },
   "author": "Jackson Tian",
