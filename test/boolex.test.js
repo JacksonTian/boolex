@@ -123,4 +123,10 @@ describe('boolex', function () {
     expect(fn({count: 5})).to.be(true);
     expect(fn({count: 6})).to.be(false);
   });
+
+  it('(@count1 + @count2) * 2 == 22 should ok', function () {
+    var fn = boolex.compile('(@count1 + @count2) * 2 == 22');
+    expect(fn({count1: 5, count2: 6})).to.be(true);
+    expect(fn({count1: 5, count2: 5})).to.be(false);
+  });
 });
